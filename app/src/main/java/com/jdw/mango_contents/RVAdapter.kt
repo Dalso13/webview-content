@@ -22,10 +22,6 @@ class RVAdapter(
         return ViewHolder(v)
     }
 
-    override fun onBindViewHolder(holder: RVAdapter.ViewHolder, position: Int) {
-        holder.bindItems(list[position])
-    }
-
     override fun getItemCount(): Int {
         return list.size
     }
@@ -45,4 +41,22 @@ class RVAdapter(
         }
 
     }
+
+    interface ItemClick {
+        fun onClick(view: View, position: Int)
+    }
+
+    var itemClick : ItemClick? = null
+
+    override fun onBindViewHolder(holder: RVAdapter.ViewHolder, position: Int) {
+
+        if (itemClick != null) {
+            holder.itemView.setOnClickListener {
+                itemClick!!.onClick(it,position)
+            }
+        }
+
+        holder.bindItems(list[position])
+    }
+
 }
